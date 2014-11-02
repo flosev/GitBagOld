@@ -1,0 +1,9 @@
+<!-- Base 'Blueprint' files -->
+<link rel="stylesheet" href="css/blueprint/screen.css" type="text/css" media="screen, projection" />
+<link rel="stylesheet" href="css/blueprint/print.css" type="text/css" media="print" />
+<!--[if IE]><link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection" /><![endif]-->
+
+<!-- Plugins to 'Blueprint' files -->
+<link rel="stylesheet" href="css/blueprint/plugins/buttons/screen.css" type="text/css" media="screen, projection" />
+<link rel="stylesheet" href="css/blueprint/plugins/fancy-type/screen.css" type="text/css" media="screen, projection" />
+<link rel="stylesheet" href="css/blueprint/plugins/link-icons/screen.css" type="text/css" media="screen, projection" />

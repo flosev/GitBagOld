@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+    <!-- ********** CONTROLLERS ********** -->
+
+    <!-- theme -->
+    <servlet>
+        <servlet-name>themeController</servlet-name>
+        <servlet-class>net.golovach.quiz.controller.theme.ThemeController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>themeController</servlet-name>
+        <url-pattern>/theme.do</url-pattern>
+    </servlet-mapping>
+    <!-- theme All -->
+    <servlet>
+        <servlet-name>themeAllController</servlet-name>
+        <servlet-class>net.golovach.quiz.controller.theme.ThemeAllController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>themeAllController</servlet-name>
+        <url-pattern>/themeAll.do</url-pattern>
+    </servlet-mapping>
+
+    <!-- quiz: "show quiz by id" -->
+    <servlet>
+        <servlet-name>quizController</servlet-name>
+        <servlet-class>net.golovach.quiz.controller.quiz.QuizController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>quizController</servlet-name>
+        <url-pattern>/quiz.do</url-pattern>
+    </servlet-mapping>
+    <!-- quiz: "show all quizes" -->
+    <servlet>
+        <servlet-name>quizAllController</servlet-name>
+        <servlet-class>net.golovach.quiz.controller.quiz.QuizAllController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>quizAllController</servlet-name>
+        <url-pattern>/quizAll.do</url-pattern>
+    </servlet-mapping>
+    <!-- quiz: "add to bucket" -->
+    <servlet>
+        <servlet-name>quizAddToBucketController</servlet-name>
+        <servlet-class>net.golovach.quiz.controller.quiz.QuizAddToBucketController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>quizAddToBucketController</servlet-name>
+        <url-pattern>/quizAddToBucket.do</url-pattern>
+    </servlet-mapping>
+    <!-- quiz: "remove from bucket" -->
+    <servlet>
+        <servlet-name>quizRemoveFromBucketController</servlet-name>
+        <servlet-class>net.golovach.quiz.controller.quiz.QuizRemoveFromBucketController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>quizRemoveFromBucketController</servlet-name>
+        <url-pattern>/quizRemoveFromBucket.do</url-pattern>
+    </servlet-mapping>
+
+    <!-- question -->
+    <servlet>
+        <servlet-name>questionController</servlet-name>
+        <servlet-class>net.golovach.quiz.controller.question.QuestionController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>questionController</servlet-name>
+        <url-pattern>/question.do</url-pattern>
+    </servlet-mapping>
+
+    <!-- ********** FILTERS ********** -->
+
+    <!-- SECURITY -->
+
+    <filter>
+        <filter-name>securityFilter</filter-name>
+        <filter-class>net.golovach.quiz.filter.security.SecurityFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>securityFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+        <!-- todo: all but not index.jsp + css/ + js/ + images/ -->
+    </filter-mapping>
+
+    <filter>
+        <filter-name>loginFilter</filter-name>
+        <filter-class>net.golovach.quiz.filter.security.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>loginFilter</filter-name>
+        <url-pattern>/login.do</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>logoutFilter</filter-name>
+        <filter-class>net.golovach.quiz.filter.security.LogoutFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>logoutFilter</filter-name>
+        <url-pattern>/logout.do</url-pattern>
+    </filter-mapping>
+
+    <!-- Performance -->
+    <filter>
+        <filter-name>perfFilter</filter-name>
+        <filter-class>net.golovach.quiz.filter.util.PerformanceFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>perfFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- по ключу 'contextConfigLocation' из ServletContext можно вычитать значение '/appContext-dao.xml' -->
+    <!-- String appCtxPath = ServletContext().getInitParameter("contextConfigLocation"); -->
+    <!-- Так делает DependencyInjectionServlet, что бы узнать, где лежит файл с конфигурацией для Spring -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/appContext-dao.xml</param-value>
+    </context-param>
+
+    <!-- Если в течении 30 минут не приходят запросы, ассоциированные с этой сессией, -->
+    <!-- то сервер ее удаляет (предварительно вызвав методы SessionListener) -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+    <!-- В случае, если пользователь не ввел никакого URL внутри сайта, а просто корневой '/' -->
+    <!-- в нашем случае http://localhost:8080/quiz, то сервер перенаправляет запрос на index.jsp -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+</web-app>

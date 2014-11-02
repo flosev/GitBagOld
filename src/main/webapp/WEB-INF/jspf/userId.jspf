@@ -1,0 +1,4 @@
+<c:if test="${user != null}">
+    Hello, ${user.login}
+    <br/><a href="./logout.do">Logout</a>
+</c:if>
