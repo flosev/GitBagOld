@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+         http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         metadata-complete="true">
+
+    <distributable/>
+
+    <!-- ********** CONTROLLERS ********** -->
+
+    <servlet>
+        <servlet-name>commodityAllController</servlet-name>
+        <servlet-class>net.flosev.quiz.controller.commodity.CommodityAllController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>commodityAllController</servlet-name>
+        <url-pattern>/commodityAll.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>commodityController</servlet-name>
+        <servlet-class>net.flosev.quiz.controller.commodity.CommodityController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>commodityController</servlet-name>
+        <url-pattern>/commodity.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>commodityFashionController</servlet-name>
+        <servlet-class>net.flosev.quiz.controller.commodity.CommodityFashionController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>commodityFashionController</servlet-name>
+        <url-pattern>/commodityType.do</url-pattern>
+    </servlet-mapping>
+    <!-- quiz: "add to bucket" -->
+    <servlet>
+        <servlet-name>quizAddToBucketController</servlet-name>
+        <servlet-class>net.flosev.quiz.controller.commodity.CommodityAddToBucketController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>quizAddToBucketController</servlet-name>
+        <url-pattern>/quizAddToBucket.do</url-pattern>
+    </servlet-mapping>
+    <!-- quiz: "remove from bucket" -->
+    <servlet>
+        <servlet-name>quizRemoveFromBucketController</servlet-name>
+        <servlet-class>net.flosev.quiz.controller.commodity.CommodityRemoveFromBucketController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>quizRemoveFromBucketController</servlet-name>
+        <url-pattern>/quizRemoveFromBucket.do</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>registerController</servlet-name>
+        <servlet-class>net.flosev.quiz.controller.user.RegisterNewUserController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>registerController</servlet-name>
+        <url-pattern>/register.do</url-pattern>
+    </servlet-mapping>
+
+
+
+
+    <!-- ********** FILTERS ********** -->
+
+    <!-- SECURITY -->
+
+    <filter>
+        <filter-name>securityFilter</filter-name>
+        <filter-class>net.flosev.quiz.filter.security.SecurityFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>securityFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+        <!-- todo: all but not index.jsp + css/ + js/ + images/ -->
+    </filter-mapping>
+
+    <filter>
+        <filter-name>loginFilter</filter-name>
+        <filter-class>net.flosev.quiz.filter.security.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>loginFilter</filter-name>
+        <url-pattern>/login.do</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>logoutFilter</filter-name>
+        <filter-class>net.flosev.quiz.filter.security.LogoutFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>logoutFilter</filter-name>
+        <url-pattern>/logout.do</url-pattern>
+    </filter-mapping>
+
+    <!-- Performance -->
+    <filter>
+        <filter-name>perfFilter</filter-name>
+        <filter-class>net.flosev.quiz.filter.util.PerformanceFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>perfFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- **** LISTENERS **** -->
+    <listener>
+        <listener-class>net.flosev.inject.AppContext</listener-class>
+    </listener>
+
+    <!-- по ключу 'contextConfigLocation' из ServletContext можно вычитать значение '/appContext-dao.xml' -->
+    <!-- String appCtxPath = ServletContext().getInitParameter("contextConfigLocation"); -->
+    <!-- Так делает DependencyInjectionServlet, что бы узнать, где лежит файл с конфигурацией для Spring -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/appContext-dao-jpa-hsql.xml</param-value>
+        <!--<param-value>/appContext-dao.xml</param-value>-->
+
+    </context-param>
+
+    <distributable/>
+
+    <!-- Если в течение 30 минут не приходят запросы, ассоциированные с этой сессией, -->
+    <!-- то сервер ее удаляет (предварительно вызвав методы SessionListener) -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+    <!-- В случае, если пользователь не ввел никакого URL внутри сайта, а просто корневой '/' -->
+    <!-- в нашем случае http://localhost:8080/quiz, то сервер перенаправляет запрос на index.jsp -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+</web-app>

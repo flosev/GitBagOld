@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/jdbc
+       http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+
+
+    <!-- **** TransactionManager, DataSource and other system classes **** -->
+
+    <!--<bean id="dataSource" class="net.flosevuiz11.dao.tx.BCPDataSource" scope="singleton" init-method="init" destroy-method="shutdown">-->
+        <!--<property name="driverClass" value="com.mysql.jdbc.Driver"/>-->
+        <!--<property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/quiz_db"/>-->
+        <!--<property name="user" value="username"/>-->
+        <!--<property name="password" value="password"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="dataSource" class="net.flosevuiz11.dao.tx.c3p0DataSource" scope="singleton" init-method="init" destroy-method="close">-->
+        <!--<property name="driverClass" value="com.mysql.jdbc.Driver"/>-->
+        <!--<property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/quiz_db"/>-->
+        <!--<property name="user" value="username"/>-->
+        <!--<property name="password" value="password"/>-->
+    <!--</bean>-->
+
+
+    <jdbc:embedded-database id="dataSource" type="HSQL">
+        <jdbc:script location="classpath:schema.sql"/>
+        <jdbc:script location="classpath:test-data.sql"/>
+    </jdbc:embedded-database>
+
+    <bean id="txManager" class="net.flosev.quiz.dao.tx.TransactionManagerThreadLocal" scope="singleton">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+
+     <!--****  DAO ****-->
+    <bean id="userDao" class="net.flosev.quiz.dao.impl.UserDaoJdbc" scope="prototype">
+        <property name="dataSource" ref="txManager"/>
+    </bean>
+    <!--<bean id="userDao" class="net.flosevuiz.dao.impl.UserDaoMock" scope="prototype">
+       <property name="dataSource" ref="txManager"/>
+   </bean>-->
+
+    <bean id="quizDao" class="net.flosev.quiz.dao.impl.QuizDaoMock" scope="prototype">
+        <property name="dataSource" ref="txManager"/>
+    </bean>
+
+    <bean id="themeDao" class="net.flosev.quiz.dao.impl.ThemeDaoMock" scope="prototype"/>
+
+    <bean id="commodityDao" class="net.flosev.quiz.dao.impl.CommodityDaoMock" scope="prototype">
+    <property name="dataSource" ref="txManager"/>
+</bean>
+
+    <bean id="sizeDao" class="net.flosev.quiz.dao.impl.SizeDaoMock" scope="prototype"/>
+
+    <bean id="fashionDao" class="net.flosev.quiz.dao.impl.FashionDaoMock" scope="prototype"/>
+
+    <bean id="questionDao" class="net.flosev.quiz.dao.impl.QuestionDaoMock" scope="prototype"/>
+
+
+    <!-- ****  VALIDATOR **** -->
+    <bean id="userValidator" class="net.flosev.quiz.validator.UserValidatorImpl" scope="prototype"/>
+</beans>
